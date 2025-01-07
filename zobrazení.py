@@ -1,13 +1,13 @@
 import tkinter as tk
 
 
-class MazeRenderer:
+class MazeVisualizer:
     def __init__(self, maze, cell_size=50):
         """
-        Initializes the renderer for displaying the maze using tkinter Canvas.
+        Inicializace vizualizační třídy pro zobrazení bludiště pomocí tkinter.
 
-        :param maze: Instance of the Maze class
-        :param cell_size: Size of one cell in pixels
+        :param maze: Instance třídy Maze.
+        :param cell_size: Velikost jedné buňky v pixelech.
         """
         self.maze = maze
         self.cell_size = cell_size
@@ -15,23 +15,29 @@ class MazeRenderer:
         self.canvas = tk.Canvas(
             self.window,
             width=self.maze.width * cell_size,
-            height=self.maze.height * cell_size
+            height=self.maze.height * cell_size,
         )
         self.canvas.pack()
 
-    def draw(self):
-        """Renders the maze onto the canvas."""
+    def render(self):
+        """
+        Vykreslí bludiště na canvas.
+        """
         self.canvas.delete("all")
-
-        for row_index, row in enumerate(self.maze.map):
-            for col_index, cell in enumerate(row):
-                x1, y1 = col_index * self.cell_size, row_index * self.cell_size
+        for y, row in enumerate(self.maze.map):
+            for x, cell in enumerate(row):
+                x1, y1 = x * self.cell_size, y * self.cell_size
                 x2, y2 = x1 + self.cell_size, y1 + self.cell_size
 
-                color = "white" if cell == 0 else "black" if cell == 1 else "green"
+                color = "white"
+                if cell == 1:
+                    color = "black"
+                elif cell == "E":
+                    color = "green"
+
                 self.canvas.create_rectangle(x1, y1, x2, y2, fill=color)
 
-        # Draw the robot
+        # Vykreslení pozice robota
         robot_x, robot_y = self.maze.position
         x1, y1 = robot_x * self.cell_size, robot_y * self.cell_size
         x2, y2 = x1 + self.cell_size, y1 + self.cell_size
@@ -39,16 +45,18 @@ class MazeRenderer:
 
     def update(self, new_position):
         """
-        Updates the robot's position and redraws the maze.
+        Aktualizuje pozici robota a překreslí bludiště.
 
-        :param new_position: New position of the robot (x, y)
+        :param new_position: Nová pozice robota (x, y).
         """
-        if self.maze.move(new_position):
-            self.draw()
+        if self.maze.move_to(new_position):
+            self.render()
         else:
-            print("Invalid move: hit a wall or out of bounds.")
+            print("Movement failed - hit a wall or moved out of bounds.")
 
-    def run(self):
-        """Starts the application."""
-        self.draw()
+    def start(self):
+        """
+        Spustí aplikaci.
+        """
+        self.render()
         self.window.mainloop()

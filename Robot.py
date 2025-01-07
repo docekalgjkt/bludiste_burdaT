@@ -1,45 +1,36 @@
-class MazeRobot:
-    def __init__(self, maze):
-        """
-        Konstruktor pro robotu.
-        :param maze: Instance třídy Maze.
-        """
-        self.maze = maze
-        self.position = maze.start
-        self.path = []
+class Maze:
+    def __init__(self, width, height, start, end, layout):
+        self.width = width
+        self.height = height
+        self.start = start
+        self.end = end
+        self.layout = layout
+        self.current_position = start
 
-    def move(self, direction):
-        """
-        Posune robota na základě zadaného směru.
-        :param direction: Směr pohybu (např. (0, 1) znamená pohyb dolů).
-        :return: True pokud se pohyb uskutečnil, jinak False.
-        """
-        new_position = (self.position[0] + direction[0], self.position[1] + direction[1])
-        if self.maze.move_to(*new_position):
-            self.position = new_position
-            self.path.append(new_position)
+    def can_move(self, new_x, new_y):
+        if 0 <= new_x < self.width and 0 <= new_y < self.height:
+            return self.layout[new_y][new_x] in (0, 'E')  # Free path or exit
+        return False
+
+    def move(self, new_x, new_y):
+        if self.can_move(new_x, new_y):
+            self.current_position = (new_x, new_y)
             return True
         return False
 
-    def find_path(self):
-        """
-        Hledání cesty bludištěm pomocí algoritmu prohledávání do hloubky (DFS).
-        :return: Seznam pozic, které tvoří cestu.
-        """
-        visited = set()
-        stack = [(self.position, [])]
+    def is_finished(self):
+        return self.current_position == self.end
 
-        while stack:
-            current_position, current_path = stack.pop()
-            if current_position in visited:
-                continue
-            visited.add(current_position)
-
-            if current_position == self.maze.end:
-                return current_path
-
-            for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
-                next_position = (current_position[0] + dx, current_position[1] + dy)
-                if self.maze.can_move_to(*next_position):
-                    stack.append((next_position, current_path + [next_position]))
-        return []
+    def draw_maze(self):
+        for row_index, row in enumerate(self.layout):
+            for col_index, cell in enumerate(row):
+                if (col_index, row_index) == self.current_position:
+                    print("P", end=" ")  # Player position
+                elif cell == 1:
+                    print("#", end=" ")  # Wall
+                elif cell == 'E':
+                    print("X", end=" ")  # Exit
+                else:
+                    print(".", end=" ")  # Path
+            print()  # New line after each row
+        print()
