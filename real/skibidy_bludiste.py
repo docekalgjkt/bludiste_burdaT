@@ -1,3 +1,4 @@
+
 class Bludiste:
     def __init__(self, sirka, vyska, zacatek, konec, mapa):
 
@@ -9,20 +10,23 @@ class Bludiste:
         self.pozice = zacatek
 
     def lze_se_pohnout(self, x, y):
+
         if 0 <= x < self.sirka and 0 <= y < self.vyska:
             return self.mapa[y][x] in (0, 'E')  # Volná cesta nebo východ
         return False
 
     def presun(self, x, y):
+
         if self.lze_se_pohnout(x, y):
             self.pozice = (x, y)
             return True
         return False
 
     def u_konecu(self):
-        return self.pozice == self.konec
 
+        return self.pozice == self.konec
     def vykresli_bludiste(self):
+
         for y, radek in enumerate(self.mapa):
             for x, bunka in enumerate(radek):
                 if (x, y) == self.pozice:
