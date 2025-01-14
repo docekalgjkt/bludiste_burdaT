@@ -1,5 +1,5 @@
 from tovarna_na_robutky import BasicRobotFactory
-from vykresleni import BludisteCanvas
+from vykresleni import BludisteSkibidy
 from xml_loader import nacti_bludiste_z_xml
 import time
 
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     # Vytvoření továrny pro robota a jeho zobrazení
     robot_factory = BasicRobotFactory()
     robot = robot_factory.create_robot(bludiste)
-    vizualizace = BludisteCanvas(bludiste)
+    vizualizace = BludisteSkibidy(bludiste)
     robot_view = robot_factory.create_robot_view(vizualizace, robot)
 
     # Vykreslení počátečního stavu

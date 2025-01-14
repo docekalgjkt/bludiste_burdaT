@@ -1,6 +1,6 @@
 from robutek import Robot
-from vykresleni_robutka import RobotView
-from vykresleni import BludisteCanvas
+from vykresleni_robutka import RobotVykresleni
+from vykresleni import BludisteSkibidy
 
 class AbstractRobotFactory:
     """Abstraktní továrna pro vytváření robotů a jejich zobrazení."""
@@ -17,4 +17,4 @@ class BasicRobotFactory(AbstractRobotFactory):
         return Robot(bludiste)
 
     def create_robot_view(self, canvas, robot):
-        return RobotView(canvas, robot)
+        return RobotVykresleni(canvas, robot)

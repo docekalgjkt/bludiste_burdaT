@@ -1,4 +1,4 @@
-class RobotView:
+class RobotVykresleni:
     def __init__(self, canvas, robot, barva="red"):
         """
         Inicializace zobrazení robota.

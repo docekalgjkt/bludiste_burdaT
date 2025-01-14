@@ -1,7 +1,7 @@
 import tkinter as tk
 
 
-class BludisteCanvas:
+class BludisteSkibidy:
     def __init__(self, bludiste, velikost_bunky=50):
         """
         Inicializuje canvas pro vykreslování bludiště.
